@@ -52,9 +52,9 @@ A computer capable of running HTML5 Canvas]
 
 ### Running the Code
 
-[1.Download or clone this repository.
- 2.Open the project folder.
- 3.Open the HTML file in a web browser.]
+[1.Download or clone this repository.]
+[2.Open the project folder.]
+[3.Open the HTML file in a web browser.]
 
 [For example:
 
