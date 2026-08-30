@@ -1,0 +1,1215 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Code-a-Pookalam 2026 | Living Flower Carpet</title>
+
+<style>
+:root {
+    --bg: #160407;
+    --gold: #ffd978;
+    --cream: #fff1c7;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            #4b130b 0%,
+            #210609 35%,
+            #090204 78%,
+            #020102 100%
+        );
+
+    font-family: Georgia, serif;
+    color: var(--cream);
+
+    display: grid;
+    place-items: center;
+}
+
+#stage {
+    position: relative;
+
+    width: min(96vmin, 1100px);
+    height: min(96vmin, 1100px);
+
+    display: grid;
+    place-items: center;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    filter: drop-shadow(0 18px 35px #000);
+}
+
+.badge {
+    position: fixed;
+
+    top: 18px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    z-index: 5;
+
+    text-align: center;
+
+    letter-spacing: 0.18em;
+
+    font-size: 11px;
+
+    color: #ffd978;
+
+    opacity: 0.9;
+}
+
+.badge b {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 19px;
+
+    letter-spacing: 0.08em;
+
+    color: #fff0bd;
+}
+
+.ui {
+    position: fixed;
+
+    left: 50%;
+    bottom: 18px;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    gap: 10px;
+
+    z-index: 5;
+}
+
+button {
+    border: 1px solid #e8b84c99;
+
+    background: #26090dcc;
+
+    color: #ffe7a1;
+
+    padding: 9px 15px;
+
+    border-radius: 999px;
+
+    font: 600 13px Georgia, serif;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(8px);
+}
+
+button:hover {
+    background: #5a180dcc;
+}
+
+@media (max-width: 600px) {
+
+    .badge {
+        top: 10px;
+    }
+
+    .badge b {
+        font-size: 15px;
+    }
+
+    .ui {
+        bottom: 10px;
+    }
+
+    button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="badge">
+    TINKERHUB RIT · CODE-A-POOKALAM 2026
+    <b>LIVING FLOWER CARPET</b>
+</div>
+
+
+<div id="stage">
+    <canvas id="pookalam"></canvas>
+</div>
+
+
+<div class="ui">
+    <button id="toggle">Pause bloom</button>
+    <button id="save">Export PNG</button>
+</div>
+
+
+<script>
+
+/* ============================================================
+   CODE-A-POOKALAM 2026
+   Procedurally Generated Kerala Pookalam
+   ============================================================ */
+
+
+const canvas = document.getElementById("pookalam");
+const ctx = canvas.getContext("2d");
+
+let W = 0;
+let DPR = 1;
+
+let paused = false;
+let startTime = performance.now();
+
+let mouse = {
+    x: -1,
+    y: -1
+};
+
+
+/* ============================================================
+   COLOUR PALETTE
+   ============================================================ */
+
+const PAL = {
+
+    cream: "#fff1c7",
+    white: "#fff9e8",
+
+    yellow: "#ffd21f",
+    gold: "#f4a900",
+
+    orange: "#f36b16",
+
+    red: "#a91d22",
+    deepRed: "#64101a",
+
+    magenta: "#b51d68",
+    pink: "#ee5686",
+
+    green: "#527b35",
+
+    dark: "#21070a"
+};
+
+
+/* ============================================================
+   CANVAS SETUP
+   ============================================================ */
+
+function setupCanvas() {
+
+    const rect = canvas.getBoundingClientRect();
+
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+    W = Math.floor(rect.width * DPR);
+
+    canvas.width = W;
+    canvas.height = W;
+
+    ctx.setTransform(
+        DPR,
+        0,
+        0,
+        DPR,
+        0,
+        0
+    );
+}
+
+
+function center() {
+    return canvas.clientWidth / 2;
+}
+
+
+/* ============================================================
+   POLAR COORDINATES
+   ============================================================ */
+
+function polar(radius, angle) {
+
+    const c = center();
+
+    return [
+        c + radius * Math.cos(angle),
+        c + radius * Math.sin(angle)
+    ];
+}
+
+
+/* ============================================================
+   POLYGON
+   ============================================================ */
+
+function polygon(points, fill, stroke = null, width = 1) {
+
+    ctx.beginPath();
+
+    points.forEach((point, i) => {
+
+        if (i === 0) {
+            ctx.moveTo(point[0], point[1]);
+        }
+        else {
+            ctx.lineTo(point[0], point[1]);
+        }
+
+    });
+
+    ctx.closePath();
+
+    if (fill) {
+
+        ctx.fillStyle = fill;
+        ctx.fill();
+
+    }
+
+    if (stroke) {
+
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = width;
+        ctx.stroke();
+
+    }
+}
+
+
+/* ============================================================
+   FLOWER PETAL
+   ============================================================ */
+
+function petal(
+    radius,
+    angle,
+    length,
+    width,
+    color,
+    rotation = 0
+) {
+
+    const [x, y] = polar(radius, angle);
+
+    ctx.save();
+
+    ctx.translate(x, y);
+
+    ctx.rotate(angle + rotation);
+
+
+    const gradient =
+        ctx.createLinearGradient(
+            0,
+            0,
+            length,
+            0
+        );
+
+    gradient.addColorStop(0, color);
+    gradient.addColorStop(0.55, color);
+    gradient.addColorStop(1, PAL.cream);
+
+    ctx.fillStyle = gradient;
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(0, 0);
+
+    ctx.bezierCurveTo(
+        length * 0.25,
+        -width,
+
+        length * 0.78,
+        -width * 0.75,
+
+        length,
+        0
+    );
+
+    ctx.bezierCurveTo(
+        length * 0.78,
+        width * 0.75,
+
+        length * 0.25,
+        width,
+
+        0,
+        0
+    );
+
+    ctx.fill();
+
+    ctx.restore();
+}
+
+
+/* ============================================================
+   RADIAL PETAL RING
+   ============================================================ */
+
+function petalRing(
+    radius,
+    count,
+    length,
+    width,
+    color,
+    phase = 0,
+    scale = 1
+) {
+
+    for (let i = 0; i < count; i++) {
+
+        const angle =
+            (Math.PI * 2 * i / count) + phase;
+
+        petal(
+            radius,
+            angle,
+            length * scale,
+            width * scale,
+            color
+        );
+    }
+}
+
+
+/* ============================================================
+   SCALLOPED RING
+   ============================================================ */
+
+function scallop(
+    radius,
+    count,
+    innerRadius,
+    color
+) {
+
+    ctx.beginPath();
+
+    for (let i = 0; i < count; i++) {
+
+        const angle =
+            Math.PI * 2 * i / count;
+
+        const r =
+            i % 2 === 0
+                ? radius
+                : innerRadius;
+
+        const [x, y] =
+            polar(r, angle);
+
+        if (i === 0) {
+            ctx.moveTo(x, y);
+        }
+        else {
+            ctx.lineTo(x, y);
+        }
+    }
+
+    ctx.closePath();
+
+    ctx.fillStyle = color;
+    ctx.fill();
+}
+
+
+/* ============================================================
+   DOT RING
+   ============================================================ */
+
+function dots(
+    radius,
+    count,
+    dotRadius,
+    color,
+    phase = 0
+) {
+
+    for (let i = 0; i < count; i++) {
+
+        const angle =
+            Math.PI * 2 * i / count + phase;
+
+        const [x, y] =
+            polar(radius, angle);
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            dotRadius,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fillStyle = color;
+
+        ctx.fill();
+    }
+}
+
+
+/* ============================================================
+   DIAMOND RING
+   ============================================================ */
+
+function diamondRing(
+    radius,
+    count,
+    size,
+    color,
+    phase = 0
+) {
+
+    for (let i = 0; i < count; i++) {
+
+        const angle =
+            Math.PI * 2 * i / count + phase;
+
+        const [x, y] =
+            polar(radius, angle);
+
+        ctx.save();
+
+        ctx.translate(x, y);
+
+        ctx.rotate(
+            angle + Math.PI / 4
+        );
+
+
+        polygon(
+            [
+                [-size, 0],
+                [0, -size * 0.62],
+                [size, 0],
+                [0, size * 0.62]
+            ],
+            color
+        );
+
+        ctx.restore();
+    }
+}
+
+
+/* ============================================================
+   LOTUS RING
+   ============================================================ */
+
+function lotus(
+    radius,
+    count,
+    length,
+    width,
+    color,
+    phase = 0
+) {
+
+    for (let i = 0; i < count; i++) {
+
+        const angle =
+            Math.PI * 2 * i / count + phase;
+
+        petal(
+            radius,
+            angle,
+            length,
+            width,
+            color
+        );
+
+        petal(
+            radius + length * 0.16,
+
+            angle +
+            Math.PI * 2 / count * 0.23,
+
+            length * 0.62,
+
+            width * 0.62,
+
+            color
+        );
+    }
+}
+
+
+/* ============================================================
+   MULTI-LAYER CENTRAL FLOWER
+   ============================================================ */
+
+function centerFlower(
+    x,
+    y,
+    radius,
+    count,
+    colors,
+    phase
+) {
+
+    ctx.save();
+
+    ctx.translate(x, y);
+
+
+    for (let layer = 0;
+         layer < colors.length;
+         layer++) {
+
+        const r =
+            radius *
+            (0.20 + layer * 0.19);
+
+        const petals =
+            count + layer * 2;
+
+
+        for (let i = 0;
+             i < petals;
+             i++) {
+
+            const angle =
+                Math.PI * 2 * i / petals
+                + phase
+                + layer * 0.13;
+
+
+            ctx.save();
+
+            ctx.rotate(angle);
+
+            ctx.fillStyle =
+                colors[layer];
+
+
+            ctx.beginPath();
+
+            ctx.ellipse(
+                r,
+                0,
+
+                radius *
+                0.42 *
+                (1 - layer * 0.06),
+
+                radius *
+                0.13 *
+                (1 - layer * 0.04),
+
+                0,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+            ctx.restore();
+        }
+    }
+
+
+    /* flower centre */
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        radius * 0.17,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle = PAL.cream;
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        0,
+        0,
+        radius * 0.08,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle = PAL.gold;
+    ctx.fill();
+
+
+    ctx.restore();
+}
+
+
+/* ============================================================
+   MAIN DRAW FUNCTION
+   ============================================================ */
+
+function draw(timeStamp) {
+
+    const size = canvas.clientWidth;
+
+    const cx = size / 2;
+
+    ctx.clearRect(
+        0,
+        0,
+        size,
+        size
+    );
+
+
+    const time =
+        (timeStamp - startTime) / 1000;
+
+
+    const pulse =
+        paused
+            ? 0
+            : Math.sin(time * 0.72) * 0.012;
+
+
+    const max =
+        center() * 0.94;
+
+
+    /* ========================================================
+       DARK FLOWER CARPET BASE
+       ======================================================== */
+
+    ctx.fillStyle = "#3a0b0b";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        cx,
+        cx,
+        max,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    /* subtle outer outline */
+
+    ctx.strokeStyle = "#f5b62a22";
+
+    ctx.lineWidth = 2;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        cx,
+        cx,
+        max * 0.98,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.stroke();
+
+
+    /* ========================================================
+       OUTER BORDER
+       ======================================================== */
+
+    scallop(
+        max * 0.96,
+        96,
+        max * 0.915,
+        PAL.orange
+    );
+
+
+    dots(
+        max * 0.925,
+        96,
+        Math.max(1.4, center() * 0.006),
+        PAL.gold,
+        Math.PI / 96
+    );
+
+
+    scallop(
+        max * 0.875,
+        48,
+        max * 0.842,
+        PAL.deepRed
+    );
+
+
+    /* ========================================================
+       OUTER LOTUS LATTICE
+       ======================================================== */
+
+    lotus(
+        max * 0.73,
+        48,
+        max * 0.11,
+        max * 0.035,
+        PAL.yellow,
+        Math.PI / 48
+    );
+
+
+    lotus(
+        max * 0.80,
+        48,
+        max * 0.075,
+        max * 0.025,
+        PAL.cream
+    );
+
+
+    diamondRing(
+        max * 0.835,
+        48,
+        max * 0.018,
+        PAL.magenta,
+        Math.PI / 48
+    );
+
+
+    /* ========================================================
+       LARGE MARIGOLD PETALS
+       ======================================================== */
+
+    petalRing(
+        max * 0.61,
+        32,
+        max * 0.16,
+        max * 0.052,
+        PAL.orange,
+        Math.PI / 32,
+        1 + pulse
+    );
+
+
+    petalRing(
+        max * 0.665,
+        32,
+        max * 0.11,
+        max * 0.038,
+        PAL.gold,
+        0,
+        1 - pulse * 0.5
+    );
+
+
+    /* ========================================================
+       KERALA-INSPIRED GEOMETRIC BAND
+       ======================================================== */
+
+    scallop(
+        max * 0.56,
+        64,
+        max * 0.535,
+        PAL.red
+    );
+
+
+    diamondRing(
+        max * 0.535,
+        64,
+        max * 0.024,
+        PAL.cream
+    );
+
+
+    dots(
+        max * 0.505,
+        64,
+        Math.max(1.2, center() * 0.005),
+        PAL.magenta,
+        Math.PI / 64
+    );
+
+
+    /* ========================================================
+       PINK AND WHITE FLOWER BAND
+       ======================================================== */
+
+    petalRing(
+        max * 0.45,
+        40,
+        max * 0.105,
+        max * 0.035,
+        PAL.pink,
+        Math.PI / 40,
+        1 + pulse
+    );
+
+
+    petalRing(
+        max * 0.405,
+        40,
+        max * 0.085,
+        max * 0.028,
+        PAL.white,
+        0,
+        1 - pulse
+    );
+
+
+    /* ========================================================
+       INNER LOTUS
+       ======================================================== */
+
+    lotus(
+        max * 0.31,
+        24,
+        max * 0.13,
+        max * 0.04,
+        PAL.magenta,
+        Math.PI / 24
+    );
+
+
+    lotus(
+        max * 0.235,
+        24,
+        max * 0.095,
+        max * 0.027,
+        PAL.yellow
+    );
+
+
+    diamondRing(
+        max * 0.19,
+        24,
+        max * 0.018,
+        PAL.red,
+        Math.PI / 24
+    );
+
+
+    /* ========================================================
+       CENTRAL FLOWER
+       ======================================================== */
+
+    centerFlower(
+        cx,
+        cx,
+        max * 0.16,
+        12,
+        [
+            PAL.red,
+            PAL.orange,
+            PAL.yellow,
+            PAL.cream
+        ],
+        time * 0.05
+    );
+
+
+    /* central magenta beads */
+
+    dots(
+        max * 0.135,
+        24,
+        Math.max(1.5, center() * 0.007),
+        PAL.magenta,
+        Math.PI / 24
+    );
+
+
+    /* central diamond */
+
+    ctx.save();
+
+    ctx.translate(cx, cx);
+
+    ctx.rotate(
+        Math.PI / 4 +
+        time * 0.01
+    );
+
+
+    polygon(
+        [
+            [-max * 0.055, 0],
+            [0, -max * 0.018],
+            [max * 0.055, 0],
+            [0, max * 0.018]
+        ],
+        PAL.gold
+    );
+
+    ctx.restore();
+
+
+    /* ========================================================
+       SMALL GREEN ACCENTS
+       ======================================================== */
+
+    dots(
+        max * 0.755,
+        24,
+        Math.max(1, center() * 0.004),
+        PAL.green,
+        Math.PI / 24
+    );
+
+
+    /* ========================================================
+       CURSOR GLOW
+       ======================================================== */
+
+    if (mouse.x >= 0) {
+
+        const dx =
+            mouse.x - cx;
+
+        const dy =
+            mouse.y - cx;
+
+        const distance =
+            Math.hypot(dx, dy);
+
+
+        if (distance < max * 1.02) {
+
+            const angle =
+                Math.atan2(dy, dx);
+
+
+            const rippleRadius =
+                Math.min(distance, max);
+
+
+            const gradient =
+                ctx.createRadialGradient(
+                    mouse.x,
+                    mouse.y,
+                    0,
+
+                    mouse.x,
+                    mouse.y,
+                    max * 0.12
+                );
+
+
+            gradient.addColorStop(
+                0,
+                "#fff5bd22"
+            );
+
+            gradient.addColorStop(
+                1,
+                "#fff5bd00"
+            );
+
+
+            ctx.fillStyle = gradient;
+
+            ctx.beginPath();
+
+            ctx.arc(
+                mouse.x,
+                mouse.y,
+                max * 0.12,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+
+            /* subtle ripple */
+
+            ctx.strokeStyle =
+                "#ffe6a133";
+
+            ctx.lineWidth = 1.5;
+
+            ctx.beginPath();
+
+            ctx.arc(
+                cx,
+                cx,
+                rippleRadius +
+                Math.sin(time * 1.5) * 3,
+
+                Math.max(
+                    0,
+                    angle - 0.12
+                ),
+
+                angle + 0.12
+            );
+
+            ctx.stroke();
+        }
+    }
+
+
+    requestAnimationFrame(draw);
+}
+
+
+/* ============================================================
+   MOUSE / TOUCH INTERACTION
+   ============================================================ */
+
+canvas.addEventListener(
+    "pointermove",
+    event => {
+
+        const rect =
+            canvas.getBoundingClientRect();
+
+        mouse.x =
+            event.clientX -
+            rect.left;
+
+        mouse.y =
+            event.clientY -
+            rect.top;
+    }
+);
+
+
+canvas.addEventListener(
+    "pointerleave",
+    () => {
+        mouse.x = -1;
+    }
+);
+
+
+/* ============================================================
+   PAUSE / RESUME
+   ============================================================ */
+
+document
+.getElementById("toggle")
+.addEventListener(
+    "click",
+    () => {
+
+        paused = !paused;
+
+        document
+        .getElementById("toggle")
+        .textContent =
+            paused
+                ? "Resume bloom"
+                : "Pause bloom";
+    }
+);
+
+
+/* ============================================================
+   HIGH-RESOLUTION PNG EXPORT
+   ============================================================ */
+
+document
+.getElementById("save")
+.addEventListener(
+    "click",
+    () => {
+
+        const targetSize = 2400;
+
+        const exportCanvas =
+            document.createElement("canvas");
+
+        exportCanvas.width =
+            targetSize;
+
+        exportCanvas.height =
+            targetSize;
+
+
+        const exportContext =
+            exportCanvas.getContext("2d");
+
+
+        /*
+         * Scale the current canvas artwork
+         * into a high-resolution square.
+         */
+
+        exportContext.drawImage(
+            canvas,
+            0,
+            0,
+            targetSize,
+            targetSize
+        );
+
+
+        const link =
+            document.createElement("a");
+
+        link.download =
+            "code-a-pookalam-2026.png";
+
+
+        link.href =
+            exportCanvas.toDataURL(
+                "image/png"
+            );
+
+
+        link.click();
+    }
+);
+
+
+/* ============================================================
+   INITIALIZE
+   ============================================================ */
+
+window.addEventListener(
+    "resize",
+    setupCanvas
+);
+
+
+setupCanvas();
+
+requestAnimationFrame(draw);
+
+</script>
+
+</body>
+</html>
+```
