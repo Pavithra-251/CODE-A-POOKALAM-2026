@@ -1,170 +1,92 @@
-
-# 🌸 Code-a-Pookalam 2026🌸
-### *Create beautiful digital art through code this Onam season!*
-
----
-
-## 🎨 About the Challenge
-
-Welcome to **Code-a-Pookalam 2026** - a fun coding challenge organized by TinkerHub RIT! 
-
-Pookalam is a traditional floral carpet made during the festival of Onam in Kerala. In this challenge, we're bringing this beautiful tradition into the digital world! Use your creativity and coding skills to create stunning digital Pookalams using any programming language of your choice.
-
-Whether you're a beginner taking your first steps into programming or an experienced developer looking for a creative outlet, this challenge is for everyone! 
-
----
-
-## 🌼How to Participate
-
-Follow these simple steps to join the challenge:
-
-### 1️⃣ Fork this Repository
-Click the **Fork** button at the top right of this repository to create your own copy.
-
-### 2️⃣ Clone Your Fork
-```bash
-git clone https://github.com/[YOUR-USERNAME]/CODE-A-POOKALAM-2026.git
-```
-
-### 3️⃣ Edit This README
-Replace this template README with your own submission details using the format provided below.
-
-### 4️⃣ Add Your Code
-Create your Pookalam using any programming language! Popular choices include:
-- 🐍 Python (with turtle, matplotlib, pygame)
-- 🌐 HTML/CSS/JavaScript
-- ☕ Java
-- 🎯 Processing
-- 🦀 Rust
-- And many more!
-
-### 5️⃣ Commit and Push to Your Fork
-```bash
-git add .
-git commit -m "My Code-a-Pookalam 2026 submission"
-git push origin main
-```
-
-### 6️⃣ Submit Your Repository
-Share your forked repository link with the organizers by **August 30, 2026**!
-
----
-
-## 📋 Rules
-
-1. **🍴 Fork Required**: You must fork this repository to participate
-2. **✏️ Edit README**: Replace this README with your submission details
-3. **💻 Any Language**: Use any programming language you're comfortable with
-4. **🎨 Be Creative**: Let your imagination run wild with colors, patterns, and designs
-5. **⏰ Deadline**: Submit your repository link by * *August 30, 2026, 11:59 PM IST**
-6. **🤝 Be Respectful**: Keep your code clean and family-friendly
-7. **📸 Include Output**: Add screenshots or images of your Pookalam
-8. **✅ Original Work**: Submit only your original code
-
----
-
-## 📝 README Template for Your Submission
-
-**Once you fork this repository, replace this entire README.md with the following format:**
-
-```markdown
-# 🌸 [Your Name]'s Pookalam 2026 🌸
+# 🌸 [Pavithra Pradeep]'s Pookalam 2026 🌸
 
 ## 👨‍💻 About Me
-- **Name:** [Your Full Name]
-- **Institution/Company:** [Your School/College/Company]
-- **GitHub:** [@your-username](https://github.com/your-username)
-- **Programming Language Used:** [Language]
+- **Name:** [Pavithra Vettiyara Pradeep]
+- **Institution/Company:** [Vidya Academy of Science and Technology]
+- **GitHub:** [@Pavithra-251](https://github.com/Pavithra-251)
+- **Programming Language Used:** [HTML, CSS, JavaScript]
 
 ## 🎨 My Pookalam
 
 ### Description
-[Write a brief description of your Pookalam design, inspiration, or the approach you took]
+[The design combines the traditional circular structure of a Kerala Pookalam with modern procedural graphics and interactive animation. Instead of using pre-made images or external artwork, the flowers, petals, geometric patterns, dots, and decorative rings are generated dynamically using JavaScript and HTML5 Canvas.
+
+The Pookalam is built using multiple concentric layers, creating a symmetrical flower-carpet design with traditional colours such as yellow, orange, red, pink, magenta, cream, and green.
+
+The central flower is surrounded by several decorative rings, including lotus petals, marigold-inspired petals, diamonds, dots, and geometric bands.
+
+The design also includes a subtle animation that gives the flowers a living, blooming appearance.]
 
 ### Preview
-![My Pookalam](output/pookalam-preview.png)
+![My Pookalam](https://i.img.it.com/il29lVzz/code-a-pookalam-2026.png)
 *Add more images if you have multiple views or animations*
 
 ### Features
-- [Feature 1 - e.g., "Colorful geometric patterns"]
-- [Feature 2 - e.g., "Interactive elements"]
+- [🌸 Procedurally generated Pookalam]
+- [🎨 Traditional Kerala-inspired colour palette]
+- [🟠 Multiple concentric flower and petal layers]
+- [🌼 Multi-layer central flower]
+- [🌺 Lotus-inspired decorative rings]
+- [🔶 Geometric diamond patterns]
+- [🔴 Red and orange scalloped borders]
+- [🟣 Magenta decorative elements]
+- [🌿 Green accent elements]
+- [✨ Animated blooming/pulsing effect]
+- [🖱️ Interactive cursor glow and ripple effect]
+- [⏸️ Pause and resume animation]
+- [💾 High-resolution 2400 × 2400 PNG export]
+- [📱 Responsive design for different screen sizes]
+- [🚫 No external images or downloaded artwork]
+    
 
 ## 🚀 How to Run
 
 ### Prerequisites
-[List any requirements, libraries, or software needed]
+[No external libraries or installations are required.
+
+You only need:
+
+A modern web browser such as Google Chrome, Microsoft Edge, Firefox, or Safari
+A computer capable of running HTML5 Canvas]
 ```bash
 # Example for Python
 pip install matplotlib turtle numpy
 ```
 
 ### Running the Code
-```bash
-# Add your specific run commands here
-python pookalam.py
-# or
-open index.html
-# or your specific instructions
-```
+
+# Download or clone this repository.
+# Open the project folder.
+# Open the HTML file in a web browser.
+
+[For example:
+
+- index.html
+
+- You can simply double-click the file, or right-click it and choose:
+
+- Open with → Google Chrome
+
+The Pookalam will automatically start rendering and animating.]
+
 
 ## 📁 File Structure
-```
+
 Code-a-Pookalam-2026/
-├── README.md (this file)
-├── pookalam.py (or your main file)
-└── requirements.txt (if applicable)
-```
+│
+├── README.md
+|
+└── index.html
+
+# The index.html file contains:
+
+HTML
+├── Page structure
+├── CSS styling
+└── JavaScript Canvas artwork
+
+
 
 ## 🎊 Happy Onam! 🎊
-*Submitted for Code-a-Pookalam 2026 by TinkerHub RIT*
-```
 
----
 
-## 💡 Tips for Participants
-
-- **Get Creative**: Think beyond traditional Pookalam patterns - add animations, interactivity, or 3D effects!
-- **Document Well**: A good README makes your submission stand out
-- **Include Visuals**: Screenshots, GIFs, or videos make your work more engaging
-- **Share Your Process**: Explain your approach and what you learned
-- **Test Your Code**: Make sure others can run your code with clear instructions
-
----
-
-## 📚 Resources & Inspiration
-
-### Programming Resources
-- **Python Graphics**: Turtle, Matplotlib, Pygame, PIL etc
-
-### Pookalam Design Ideas
-- Traditional geometric patterns
-- Floral motifs and mandala designs
-- Colorful concentric circles
-- Interactive/animated elements
-- 3D rendered Pookalams
-
----
-
-## 🏢 Organizer Information
-
-**Event Organized By:** TinkerHub RIT  
-**Contact:** tinkerhub@rit.ac.in
-**Event Date:**August 2026
-**Deadline:** August 30, 2026  
-
-### About TinkerHub RIT
-TinkerHub RIT is a community of makers, learners, and innovators at Rajiv Gandhi Institute of Technology. We organize various tech events, workshops, and coding challenges to foster creativity and learning in technology.
-
----
-
-## 🎊 Happy Coding & Happy Onam! 🎊
-
-*May your code bloom as beautifully as a traditional Pookalam!*
-
----
-
-**⭐ Don't forget to star this repository if you enjoyed the challenge!**
-
-### 🔗 Share Your Work
-After completing your submission, share it on social media with:
-**#CodeAPookalam2026 #TinkerHubRIT #Onam2026 #CodingChallenge**
