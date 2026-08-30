@@ -48,16 +48,13 @@ You only need:
 
 A modern web browser such as Google Chrome, Microsoft Edge, Firefox, or Safari
 A computer capable of running HTML5 Canvas]
-```bash
-# Example for Python
-pip install matplotlib turtle numpy
-```
+
 
 ### Running the Code
 
-# Download or clone this repository.
-# Open the project folder.
-# Open the HTML file in a web browser.
+[1.Download or clone this repository.
+ 2.Open the project folder.
+ 3.Open the HTML file in a web browser.]
 
 [For example:
 
